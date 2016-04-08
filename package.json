@@ -1,0 +1,50 @@
+{
+  "name": "get-feeds",
+  "version": "0.1.0",
+  "description": "Get RSS/Atom/ActivityStream feeds from an HTML string",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "xo && nyc --reporter=lcov --reporter=text ava",
+    "coverage": "nyc report --reporter=text-lcov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joakimbeng/get-feeds.git"
+  },
+  "keywords": [
+    "get",
+    "find",
+    "feed",
+    "rss",
+    "atom",
+    "activitystream",
+    "html"
+  ],
+  "author": {
+    "name": "Joakim Carlstein",
+    "email": "joakim@beng.se",
+    "url": "http://joakim.beng.se"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joakimbeng/get-feeds/issues"
+  },
+  "homepage": "https://github.com/joakimbeng/get-feeds#readme",
+  "xo": {
+    "envs": [
+      "node"
+    ]
+  },
+  "devDependencies": {
+    "ava": "^0.14.0",
+    "coveralls": "^2.11.9",
+    "nyc": "^6.2.1",
+    "xo": "^0.13.0"
+  },
+  "dependencies": {
+    "cheerio": "^0.20.0"
+  }
+}
