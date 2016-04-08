@@ -165,6 +165,27 @@ test('html with both a title and a feed link with title attribute', t => {
 	t.is(feed.title, 'My feed');
 });
 
+test('feed title is nonsense', t => {
+	const feeds = getFeeds(`
+		<html>
+			<head>
+				<title>My blog</title>
+				<link rel="alternate" type="application/rss+xml" href="rss.xml" title="Feed">
+				<link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom">
+				<link rel="alternate" type="text/rss" href="feed.rss" title="RSS 2.0">
+				<link rel="alternate" type="text/atom" href="feed.atom" title=" &raquo; Feed">
+			</head>
+			<body>
+				Lorem ipsum
+			</body>
+		</html>
+	`);
+	t.is(feeds[0].title, 'My blog');
+	t.is(feeds[1].title, 'My blog');
+	t.is(feeds[2].title, 'My blog');
+	t.is(feeds[3].title, 'My blog » Feed');
+});
+
 test('html with a base tag and a feed', t => {
 	const [feed] = getFeeds(`
 		<html>

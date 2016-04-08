@@ -3,6 +3,9 @@ const url = require('url');
 const cheerio = require('cheerio');
 
 const FEED_TYPES = /^((application|text)\/(atom|rss)|application\/activitystream)/i;
+const NON_LETTERS = /\W/g;
+const LEADING_NON_LETTERS = /^\W+/;
+const NONSENSE_TITLES = /^(feed|(rss|atom)\d*)$/;
 
 module.exports = exports = function (html, options) {
 	options = options || {};
@@ -25,7 +28,7 @@ module.exports = exports = function (html, options) {
 		const type = link.attr('type');
 		if (type && FEED_TYPES.test(type)) {
 			feeds.push({
-				title: link.attr('title') || title,
+				title: getTitle(link, title),
 				type,
 				href: url.resolve(baseUrl, link.attr('href'))
 			});
@@ -34,3 +37,21 @@ module.exports = exports = function (html, options) {
 
 	return feeds;
 };
+
+function getTitle(link, documentTitle) {
+	const titleAttr = link.attr('title') || '';
+	if (!titleAttr) {
+		return documentTitle;
+	}
+	if (!documentTitle) {
+		return titleAttr;
+	}
+	if (LEADING_NON_LETTERS.test(titleAttr)) {
+		return `${documentTitle.trim()} ${titleAttr.trim()}`;
+	}
+	const nonLettersRemoved = titleAttr.toLowerCase().replace(NON_LETTERS, '');
+	if (NONSENSE_TITLES.test(nonLettersRemoved)) {
+		return documentTitle;
+	}
+	return titleAttr;
+}
